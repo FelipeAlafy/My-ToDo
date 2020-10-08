@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class MasterScreen extends javax.swing.JFrame {
     public ArrayList<JCheckBox> tasks = new ArrayList<>();
     public MasterScreen() {
-        
+        System.out.println("Working Directory: " + System.getProperty("user.dir"));
         initComponents();
     }
 
@@ -32,12 +32,8 @@ public class MasterScreen extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        lblID = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        lblNome = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         SliderPanel = new javax.swing.JPanel();
@@ -59,16 +55,15 @@ public class MasterScreen extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Limpar Tarefas");
+        btnLimpar.setText("Limpar Tarefas");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Ususário:");
-
-        jLabel4.setText("ID:");
-
-        lblID.setText("0");
-
-        jLabel5.setText("Nome:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,23 +80,12 @@ public class MasterScreen extends javax.swing.JFrame {
                                 .addGap(43, 43, 43)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(btnLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,16 +94,8 @@ public class MasterScreen extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(btnLimpar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdd)
                 .addContainerGap())
@@ -164,8 +140,40 @@ public class MasterScreen extends javax.swing.JFrame {
         JCheckBox jcheckbox = new JCheckBox("jCheckBox" + Integer.toString(this.tasks.size() + 1));
         jcheckbox.setText(JOptionPane.showInputDialog("Digite o nome: "));
         SliderPanel.add(jcheckbox);
+        tasks.add(jcheckbox);
         SliderPanel.updateUI();
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        // TODO add your handling code here:
+        System.out.println(SliderPanel.getComponents().length);
+        if (tasks.size() == 1) {
+            System.out.println("First if");
+            if (tasks.get(0).isSelected()) {
+                System.out.println("2 if");
+                SliderPanel.remove(0);
+                tasks.remove(0);  
+                SliderPanel.updateUI();
+            }
+        } else if (tasks.size() > 1) {
+            //Removendo multiplas tarefas.
+            int max = SliderPanel.getComponents().length;
+            int c = --max;
+            while (c >= 0) {
+                if (tasks.get(c).isSelected()) {
+                    SliderPanel.remove(c);
+                    SliderPanel.updateUI();
+                    tasks.remove(c);
+                }
+                c--;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro não há tarefas marcadas para poder remover.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        //Remover do banco
+    }//GEN-LAST:event_btnLimparActionPerformed
     
     /**
      * @param args the command line arguments
@@ -205,15 +213,11 @@ public class MasterScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel SliderPanel;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblID;
-    private javax.swing.JLabel lblNome;
     // End of variables declaration//GEN-END:variables
 }
