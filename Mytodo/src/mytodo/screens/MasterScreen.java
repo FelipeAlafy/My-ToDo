@@ -8,7 +8,6 @@ package mytodo.screens;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import mytodo.disc.Disc;
 
 /**
  *

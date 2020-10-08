@@ -4,8 +4,11 @@ package mytodo.disc;
  *
  * @author falaf
  */
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,5 +54,29 @@ public class Disc {
             Logger.getLogger(Disc.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+    
+    public ArrayList<String> read (String folder, String fileToRead) {
+        File file = new File(folder+"/"+fileToRead);
+        Path path = file.toPath();
+        ArrayList<String> data = new ArrayList<>();
+        
+        if (Files.exists(path)) {
+            try {
+                //Reading
+                FileReader fileReader = new FileReader(file);
+                BufferedReader reader = new BufferedReader(fileReader);
+                
+                String row = null;
+                while((row = reader.readLine()) != null){
+                    data.add(row);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Disc.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Disc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return data;
     }
 }
