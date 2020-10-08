@@ -8,6 +8,7 @@ package mytodo.screens;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import mytodo.disc.Disc;
 
 /**
  *
@@ -16,7 +17,6 @@ import javax.swing.JOptionPane;
 public class MasterScreen extends javax.swing.JFrame {
     public ArrayList<JCheckBox> tasks = new ArrayList<>();
     public MasterScreen() {
-        System.out.println("Working Directory: " + System.getProperty("user.dir"));
         initComponents();
     }
 
