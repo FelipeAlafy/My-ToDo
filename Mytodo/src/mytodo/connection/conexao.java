@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class conexao {
     private static final String DRIVER =  "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:4096/dbmytodo";
+    private static final String URL = "jdbc:mysql://localhost:3306/dbmytodo";
     private static final String USER = "root";
     private static final String PASS = "";
     

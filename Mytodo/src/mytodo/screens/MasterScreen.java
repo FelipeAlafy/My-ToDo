@@ -8,6 +8,9 @@ package mytodo.screens;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import mytodo.model.bean.conta;
+import mytodo.model.bean.todo;
+import mytodo.model.dao.todos;
 
 /**
  *
@@ -15,8 +18,13 @@ import javax.swing.JOptionPane;
  */
 public class MasterScreen extends javax.swing.JFrame {
     public ArrayList<JCheckBox> tasks = new ArrayList<>();
-    public MasterScreen() {
+    public todos todos = new todos();
+    public MasterScreen(conta contaLogada) {
         initComponents();
+        this.lblUN.setText(contaLogada.getName());
+        this.lblUID.setText(contaLogada.getId().toString());
+        //Synchronizing screen with DB values
+        this.sync();
     }
 
     /**
@@ -32,7 +40,11 @@ public class MasterScreen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        lblUserName = new javax.swing.JLabel();
+        lblUserIdText = new javax.swing.JLabel();
+        btnSync = new javax.swing.JButton();
+        lblUID = new javax.swing.JLabel();
+        lblUN = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         SliderPanel = new javax.swing.JPanel();
@@ -61,8 +73,18 @@ public class MasterScreen extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("Ususário:");
+        lblUserName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblUserName.setText("Ususário: ");
+
+        lblUserIdText.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblUserIdText.setText("User ID: ");
+
+        btnSync.setText("Sync");
+        btnSync.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSyncActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -72,19 +94,28 @@ public class MasterScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(lblUserName)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSync, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(30, 30, 30)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblUN, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblUserIdText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUID, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,8 +123,16 @@ public class MasterScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(lblUN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblUserIdText, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                    .addComponent(lblUID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 568, Short.MAX_VALUE)
+                .addComponent(btnSync)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLimpar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdd)
@@ -105,7 +144,9 @@ public class MasterScreen extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Tarefas");
 
+        SliderPanel.setAlignmentY(1.0F);
         SliderPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        SliderPanel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         SliderPanel.setLayout(new javax.swing.BoxLayout(SliderPanel, javax.swing.BoxLayout.PAGE_AXIS));
         jScrollPane1.setViewportView(SliderPanel);
 
@@ -135,23 +176,32 @@ public class MasterScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // Add Task's:
+        //Add Task's:
         JCheckBox jcheckbox = new JCheckBox("jCheckBox" + Integer.toString(this.tasks.size() + 1));
         jcheckbox.setText(JOptionPane.showInputDialog("Digite o nome: "));
         SliderPanel.add(jcheckbox);
         tasks.add(jcheckbox);
-        SliderPanel.updateUI();
+        
+        //Add on DB
+        todo td = new todo();
+        td.setName(jcheckbox.getText());
+        td.setUID(Integer.parseInt(this.lblUID.getText()));
+        this.todos.addOnDB(td);
+        
+        //Synchronizing screen with DB values
+        this.sync();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        //TODO add your handling code here:
         System.out.println(SliderPanel.getComponents().length);
         if (tasks.size() == 1) {
             System.out.println("First if");
             if (tasks.get(0).isSelected()) {
                 System.out.println("2 if");
                 SliderPanel.remove(0);
-                tasks.remove(0);  
+                todos.remoOnDB(tasks.get(0).getText(), Integer.parseInt(this.lblUID.getText()));
+                tasks.remove(0);
                 SliderPanel.updateUI();
             }
         } else if (tasks.size() > 1) {
@@ -162,6 +212,7 @@ public class MasterScreen extends javax.swing.JFrame {
                 if (tasks.get(c).isSelected()) {
                     SliderPanel.remove(c);
                     SliderPanel.updateUI();
+                    todos.remoOnDB(tasks.get(c).getText(), Integer.parseInt(this.lblUID.getText()));
                     tasks.remove(c);
                 }
                 c--;
@@ -169,10 +220,28 @@ public class MasterScreen extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Erro não há tarefas marcadas para poder remover.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        
-        
-        //Remover do banco
+        this.sync();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnSyncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSyncActionPerformed
+        // TODO add your handling code here:
+        this.sync();
+    }//GEN-LAST:event_btnSyncActionPerformed
+    
+    public final void sync() {
+        ArrayList<todo> syncro = new ArrayList<>();
+        syncro.addAll(todos.getDBValues(Integer.parseInt(this.lblUID.getText())));
+        SliderPanel.removeAll();
+        int c = 0;
+        while (c < syncro.size()) {
+            JCheckBox jcheckbox = new JCheckBox("jCheckBox" + Integer.toString(this.tasks.size() + 1));
+            jcheckbox.setText(syncro.get(c).getName());
+            tasks.add(jcheckbox);
+            SliderPanel.add(jcheckbox);
+            c++;
+        }
+        SliderPanel.updateUI();
+    }
     
     /**
      * @param args the command line arguments
@@ -200,23 +269,28 @@ public class MasterScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MasterScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
+        // Não rode a tela principal por aqui apenas pela tela de login
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MasterScreen().setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel SliderPanel;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnSync;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblUID;
+    private javax.swing.JLabel lblUN;
+    private javax.swing.JLabel lblUserIdText;
+    private javax.swing.JLabel lblUserName;
     // End of variables declaration//GEN-END:variables
 }

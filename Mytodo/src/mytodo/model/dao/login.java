@@ -12,14 +12,15 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mytodo.connection.conexao;
+import mytodo.model.bean.conta;
 
 /**
  *
  * @author falaf
  */
 public class login {
-    public boolean login(String name, String pass) throws InterruptedException{
-        boolean check = false;
+    public conta login(String name, String pass) throws InterruptedException{
+        conta conta = new conta();
         
         Connection con = conexao.con();
         PreparedStatement stmt = null;
@@ -32,13 +33,15 @@ public class login {
             rs = stmt.executeQuery();
             
             if(rs.next()){
-                check = true;
+                conta.setName(name);
+                conta.setPass(pass);
+                conta.setId(rs.getInt("id"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             conexao.closeConnection(con, stmt, rs);
         }
-        return check;
+        return conta;
     }
 }

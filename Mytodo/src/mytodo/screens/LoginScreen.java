@@ -157,7 +157,6 @@ public class LoginScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         login l = new login();
         conta c = new conta();
-        MasterScreen ms = new MasterScreen();
         try {
             c.setName(this.FiledName.getText());
             char[] password = this.jPasswordField1.getPassword();
@@ -166,8 +165,9 @@ public class LoginScreen extends javax.swing.JFrame {
                 pass = pass + password[cha];
             }
             System.out.println(pass);
-            boolean check = l.login(this.FiledName.getText(), pass);
-            if(check){
+            conta check = l.login(this.FiledName.getText(), pass);
+            if(check.getId() != null){
+                MasterScreen ms = new MasterScreen(check);
                 ms.setVisible(true);
                 this.dispose();
             }

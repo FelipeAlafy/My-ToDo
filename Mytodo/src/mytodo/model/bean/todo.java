@@ -9,12 +9,12 @@ package mytodo.model.bean;
  *
  * @author falaf
  */
-public class conta {
-    private Integer id;
+public class todo {
+    private int id;
     private String name;
-    private String pass;
+    private int UID;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -30,11 +30,12 @@ public class conta {
         this.name = name;
     }
 
-    public String getPass() {
-        return pass;
+    public int getUID() {
+        return UID;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setUID(int idUser) {
+        this.UID = idUser;
     }
+    
 }
