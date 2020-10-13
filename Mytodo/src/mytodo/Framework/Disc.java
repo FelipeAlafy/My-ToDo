@@ -1,7 +1,7 @@
-package mytodo.disc;
+package mytodo.Framework;
 
 /**
- *
+ * Responsabilty: read/write on disc
  * @author falaf
  */
 import java.io.BufferedReader;
